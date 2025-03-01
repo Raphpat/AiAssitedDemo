@@ -1,138 +1,162 @@
+// Variables
+$color-primary: #2196f3;
+$color-error: #f44336;
+$color-text: #2c3e50;
+$color-text-light: #546e7a;
+$color-background: #ffffff;
+$color-border: #e0e0e0;
+
+$spacing-unit: 1rem;
+$border-radius: 0.5rem;
+$transition-duration: 0.2s;
+
+// Mixins
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-unit * 0.75;
+  border: 2px solid $color-border;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  transition: all $transition-duration ease-in-out;
+  background-color: $color-background;
+  color: $color-text;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+
+  &--error {
+    border-color: $color-error;
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($color-error, 0.1);
+    }
+  }
+}
+
+// Component styles
 .calculator {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	padding: 2rem;
-	background-color: #f5f5f5;
-	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: $color-background;
+  padding: $spacing-unit * 1.5;
+  border-radius: $border-radius;
 
-	// Elements
-	&__title {
-		font-size: 1.5rem;
-		font-weight: bold;
-		color: #333;
-		margin-bottom: 1rem;
-	}
+  &__header {
+    margin-bottom: $spacing-unit * 1.5;
+  }
 
-	&__form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
+  &__title {
+    color: $color-text;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+  }
 
-	&__input-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit * 1.5;
+  }
 
-	&__label {
-		font-size: 1rem;
-		color: #666;
-	}
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit;
+  }
 
-	&__input {
-		padding: 0.5rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 1rem;
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit * 0.5;
+  }
 
-		&--error {
-			border-color: #ff4444;
-		}
+  &__label-text {
+    color: $color-text-light;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
 
-		&:focus {
-			outline: none;
-			border-color: #007bff;
-			box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-		}
-	}
+  &__input {
+    @include input-base;
+  }
 
-	&__button {
-		padding: 0.75rem 1.5rem;
-		background-color: #007bff;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		font-size: 1rem;
-		cursor: pointer;
-		transition: background-color 0.2s;
+  &__select {
+    @include input-base;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23546e7a' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $spacing-unit center;
+    padding-right: $spacing-unit * 3;
+  }
 
-		&:hover {
-			background-color: #0056b3;
-		}
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-unit * 0.5;
+    padding: $spacing-unit $spacing-unit * 2;
+    background-color: $color-primary;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all $transition-duration ease-in-out;
 
-		&:active {
-			background-color: #004085;
-		}
+    &:hover:not(:disabled) {
+      background-color: darken($color-primary, 10%);
+    }
 
-		&--secondary {
-			background-color: #6c757d;
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
 
-			&:hover {
-				background-color: #545b62;
-			}
+    &--disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
 
-			&:active {
-				background-color: #4e555b;
-			}
-		}
+  &__loading-indicator {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(white, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
 
-		&--disabled {
-			background-color: #ccc;
-			cursor: not-allowed;
+  &__footer {
+    margin-top: $spacing-unit * 1.5;
+  }
 
-			&:hover {
-				background-color: #ccc;
-			}
-		}
-	}
+  &__result {
+    padding: $spacing-unit;
+    background-color: rgba($color-primary, 0.1);
+    color: $color-primary;
+    border-radius: $border-radius;
+    font-weight: 500;
+  }
 
-	&__result {
-		margin-top: 1rem;
-		padding: 1rem;
-		background-color: #e9ecef;
-		border-radius: 4px;
+  &__error {
+    padding: $spacing-unit;
+    background-color: rgba($color-error, 0.1);
+    color: $color-error;
+    border-radius: $border-radius;
+    font-weight: 500;
+  }
 
-		&--success {
-			background-color: #d4edda;
-			color: #155724;
-		}
+  // Loading state
+  &--loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
 
-		&--error {
-			background-color: #f8d7da;
-			color: #721c24;
-		}
-	}
-
-	// Modifiers
-	&--loading {
-		opacity: 0.7;
-		pointer-events: none;
-	}
-
-	&--dark {
-		background-color: #333;
-		color: white;
-
-		.calculator__label {
-			color: #ddd;
-		}
-
-		.calculator__input {
-			background-color: #444;
-			border-color: #555;
-			color: white;
-
-			&:focus {
-				border-color: #007bff;
-			}
-		}
-
-		.calculator__result {
-			background-color: #444;
-			color: white;
-		}
-	}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

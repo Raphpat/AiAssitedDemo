@@ -1,0 +1,68 @@
+// Variables
+$spacing-base: 1rem;
+$max-width: 1200px;
+$border-radius: 0.5rem;
+$transition-duration: 0.3s;
+
+// Mixins
+@mixin container {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: $spacing-base * 2;
+}
+
+@mixin elevation($level: 1) {
+  box-shadow: #{$level}px #{$level * 2}px #{$level * 4}px rgba(0, 0, 0, 0.1),
+    #{$level}px #{$level}px #{$level * 2}px rgba(0, 0, 0, 0.05);
+}
+
+// Main container
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+// Header styles
+.app-header {
+  @include container;
+  padding-top: $spacing-base * 3;
+  padding-bottom: $spacing-base * 3;
+  text-align: center;
+}
+
+.app-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// Content section
+.app-content {
+  @include container;
+  flex: 1;
+}
+
+// Grid layout
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: $spacing-base * 2;
+  align-items: start;
+
+  > * {
+    @include elevation(2);
+    border-radius: $border-radius;
+    transition: transform $transition-duration ease-in-out;
+
+    &:hover {
+      transform: translateY(-2px);
+      @include elevation(3);
+    }
+  }
+}

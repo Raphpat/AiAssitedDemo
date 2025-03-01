@@ -1,1 +1,80 @@
-<p>prime-checker works!</p>
+<article
+  class="prime-checker"
+  [class.prime-checker--loading]="loading"
+  [attr.aria-busy]="loading"
+>
+  <header class="prime-checker__header">
+    <h2 class="prime-checker__title">Prime Number Checker</h2>
+  </header>
+
+  <form
+    [formGroup]="primeForm"
+    (ngSubmit)="checkPrime()"
+    class="prime-checker__form"
+    role="form"
+    aria-label="Prime Number Checker"
+  >
+    <div class="prime-checker__input-container">
+      <label class="prime-checker__label">
+        <span class="prime-checker__label-text">Enter a number</span>
+        <input
+          type="number"
+          formControlName="number"
+          class="prime-checker__input"
+          [class.prime-checker__input--error]="
+            primeForm.get('number')?.invalid && primeForm.get('number')?.touched
+          "
+          aria-label="Number to check"
+          min="1"
+        />
+      </label>
+
+      <div
+        *ngIf="
+          primeForm.get('number')?.invalid && primeForm.get('number')?.touched
+        "
+        class="prime-checker__validation"
+        role="alert"
+      >
+        <span *ngIf="primeForm.get('number')?.errors?.['required']"
+          >Please enter a number</span
+        >
+        <span *ngIf="primeForm.get('number')?.errors?.['min']"
+          >Number must be greater than 0</span
+        >
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="prime-checker__button"
+      [class.prime-checker__button--disabled]="primeForm.invalid || loading"
+      [disabled]="primeForm.invalid || loading"
+      aria-label="Check if number is prime"
+    >
+      <span class="prime-checker__button-text">Check Prime</span>
+      <span
+        *ngIf="loading"
+        class="prime-checker__loading-indicator"
+        aria-hidden="true"
+      ></span>
+    </button>
+  </form>
+
+  <footer class="prime-checker__footer" *ngIf="result !== null || error">
+    <div
+      *ngIf="result !== null && number !== null"
+      class="prime-checker__result"
+      [class.prime-checker__result--is-prime]="result"
+      [class.prime-checker__result--not-prime]="!result"
+      role="status"
+      aria-live="polite"
+    >
+      {{ number }} is {{ result ? "" : "not " }}a prime number
+    </div>
+
+    <div *ngIf="error" class="prime-checker__error" role="alert">
+      {{ error }}
+    </div>
+  </footer>
+</article>
