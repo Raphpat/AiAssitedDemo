@@ -1,57 +1,67 @@
-<div class="calculator-container">
-  <h2>Calculator</h2>
-  
-  <div class="calculator-form">
-    <div class="form-group">
-      <label for="num1">First Number:</label>
-      <input 
-        type="number" 
-        id="num1" 
-        [(ngModel)]="num1" 
-        class="form-control"
-        [disabled]="loading">
-    </div>
+<div class="calculator" [class.calculator--loading]="loading" [class.calculator--dark]="darkMode">
+	<h2 class="calculator__title">Calculator</h2>
 
-    <div class="form-group">
-      <label for="operation">Operation:</label>
-      <select 
-        id="operation" 
-        [(ngModel)]="operation" 
-        class="form-control"
-        [disabled]="loading">
-        <option value="add">Add (+)</option>
-        <option value="multiply">Multiply (×)</option>
-        <option value="divide">Divide (÷)</option>
-      </select>
-    </div>
+	<form class="calculator__form" (ngSubmit)="calculate()">
+		<div class="calculator__input-group">
+			<label class="calculator__label" for="firstNumber">First Number:</label>
+			<input
+				class="calculator__input"
+				[class.calculator__input--error]="firstNumberError"
+				id="firstNumber"
+				type="number"
+				[(ngModel)]="firstNumber"
+				name="firstNumber"
+				required
+			/>
+		</div>
 
-    <div class="form-group">
-      <label for="num2">Second Number:</label>
-      <input 
-        type="number" 
-        id="num2" 
-        [(ngModel)]="num2" 
-        class="form-control"
-        [disabled]="loading">
-    </div>
+		<div class="calculator__input-group">
+			<label class="calculator__label" for="secondNumber">Second Number:</label>
+			<input
+				class="calculator__input"
+				[class.calculator__input--error]="secondNumberError"
+				id="secondNumber"
+				type="number"
+				[(ngModel)]="secondNumber"
+				name="secondNumber"
+				required
+			/>
+		</div>
 
-    <button 
-      (click)="calculate()" 
-      class="calculate-btn"
-      [disabled]="loading">
-      {{ loading ? 'Calculating...' : 'Calculate' }}
-    </button>
+		<div class="calculator__input-group">
+			<label class="calculator__label" for="operation">Operation:</label>
+			<select
+				class="calculator__input"
+				id="operation"
+				[(ngModel)]="selectedOperation"
+				name="operation"
+				required
+			>
+				<option value="add">Add</option>
+				<option value="multiply">Multiply</option>
+				<option value="divide">Divide</option>
+			</select>
+		</div>
 
-    <div class="result" *ngIf="result !== null">
-      Result: {{ result }}
-    </div>
+		<button
+			class="calculator__button"
+			[class.calculator__button--disabled]="loading"
+			type="submit"
+			[disabled]="loading"
+		>
+			Calculate
+		</button>
+	</form>
 
-    <div class="error" *ngIf="error">
-      {{ error }}
-    </div>
+	@if (result) {
+		<div class="calculator__result calculator__result--success">
+			Result: {{ result }}
+		</div>
+	}
 
-    <div class="loading" *ngIf="loading">
-      <div class="spinner"></div>
-    </div>
-  </div>
+	@if (error) {
+		<div class="calculator__result calculator__result--error">
+			{{ error }}
+		</div>
+	}
 </div>
