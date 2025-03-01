@@ -1,0 +1,90 @@
+<article
+  class="calculator"
+  [class.calculator--loading]="loading"
+  [attr.aria-busy]="loading"
+>
+  <header class="calculator__header">
+    <h2 class="calculator__title">Calculator</h2>
+  </header>
+
+  <form
+    [formGroup]="calculatorForm"
+    (ngSubmit)="calculate()"
+    class="calculator__form"
+    role="form"
+    aria-label="Math Calculator"
+  >
+    <div class="calculator__inputs">
+      <label class="calculator__label">
+        <span class="calculator__label-text">First Number</span>
+        <input
+          type="number"
+          formControlName="firstNumber"
+          class="calculator__input"
+          [class.calculator__input--error]="
+            calculatorForm.get('firstNumber')?.invalid &&
+            calculatorForm.get('firstNumber')?.touched
+          "
+          aria-label="First number"
+        />
+      </label>
+
+      <label class="calculator__label">
+        <span class="calculator__label-text">Operation</span>
+        <select
+          formControlName="selectedOperation"
+          class="calculator__select"
+          aria-label="Mathematical operation"
+        >
+          <option value="add">Addition (+)</option>
+          <option value="multiply">Multiplication (×)</option>
+          <option value="divide">Division (÷)</option>
+        </select>
+      </label>
+
+      <label class="calculator__label">
+        <span class="calculator__label-text">Second Number</span>
+        <input
+          type="number"
+          formControlName="secondNumber"
+          class="calculator__input"
+          [class.calculator__input--error]="
+            calculatorForm.get('secondNumber')?.invalid &&
+            calculatorForm.get('secondNumber')?.touched
+          "
+          aria-label="Second number"
+        />
+      </label>
+    </div>
+
+    <button
+      type="submit"
+      class="calculator__button"
+      [class.calculator__button--disabled]="calculatorForm.invalid || loading"
+      [disabled]="calculatorForm.invalid || loading"
+      aria-label="Calculate result"
+    >
+      <span class="calculator__button-text">Calculate</span>
+      <span
+        *ngIf="loading"
+        class="calculator__loading-indicator"
+        aria-hidden="true"
+      ></span>
+    </button>
+  </form>
+
+  <footer class="calculator__footer" *ngIf="result !== null || error">
+    <div
+      *ngIf="result !== null"
+      class="calculator__result"
+      role="status"
+      aria-live="polite"
+    >
+      Result: {{ result }}
+    </div>
+
+    <div *ngIf="error" class="calculator__error" role="alert">
+      {{ error }}
+    </div>
+  </footer>
+</article>

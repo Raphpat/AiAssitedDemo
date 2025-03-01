@@ -1,12 +1,25 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CalculatorComponent } from './components/calculator/calculator.component';
+import { PrimeCheckerComponent } from './components/prime-checker/prime-checker.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CalculatorComponent,
+    PrimeCheckerComponent,
+  ] as const,
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'frontend';
+  readonly #title = 'Math Operations' as const;
+
+  get title(): string {
+    return this.#title;
+  }
 }

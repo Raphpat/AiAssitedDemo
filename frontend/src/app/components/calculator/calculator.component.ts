@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MathService } from '../services/math.service';
+import { MathService } from '../../services/math.service';
 
 @Component({
   selector: 'app-calculator',
