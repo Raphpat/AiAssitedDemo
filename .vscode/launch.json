@@ -1,0 +1,36 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch Frontend",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/frontend",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run", "start"],
+			"console": "integratedTerminal",
+			"serverReadyAction": {
+				"pattern": "- Local:.+(https?://\\S+)",
+				"uriFormat": "http://localhost:4200",
+				"action": "openExternally"
+			}
+		},
+		{
+			"type": "java",
+			"name": "Launch Backend",
+			"request": "launch",
+			"mainClass": "com.example.demo.DemoApplication",
+			"projectName": "demo",
+			"cwd": "${workspaceFolder}",
+			"env": {
+				"SPRING_PROFILES_ACTIVE": "local"
+			}
+		}
+	],
+	"compounds": [
+		{
+			"name": "Launch Full Stack",
+			"configurations": ["Launch Backend", "Launch Frontend"]
+		}
+	]
+}

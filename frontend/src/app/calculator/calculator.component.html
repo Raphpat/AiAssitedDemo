@@ -1,67 +1,48 @@
-<div class="calculator" [class.calculator--loading]="loading" [class.calculator--dark]="darkMode">
-	<h2 class="calculator__title">Calculator</h2>
+<div
+  class="calculator"
+  [class.calculator--loading]="loading"
+  [class.calculator--dark]="darkMode"
+>
+  <h2 class="calculator__title">Calculator</h2>
 
-	<form class="calculator__form" (ngSubmit)="calculate()">
-		<div class="calculator__input-group">
-			<label class="calculator__label" for="firstNumber">First Number:</label>
-			<input
-				class="calculator__input"
-				[class.calculator__input--error]="firstNumberError"
-				id="firstNumber"
-				type="number"
-				[(ngModel)]="firstNumber"
-				name="firstNumber"
-				required
-			/>
-		</div>
+  <form
+    [formGroup]="calculatorForm"
+    (ngSubmit)="calculate()"
+    class="calculator__inputs"
+  >
+    <input
+      type="number"
+      formControlName="firstNumber"
+      class="calculator__input"
+      placeholder="First number"
+    />
+    <select formControlName="selectedOperation" class="calculator__select">
+      <option value="add">+</option>
+      <option value="subtract">-</option>
+      <option value="multiply">×</option>
+      <option value="divide">÷</option>
+    </select>
+    <input
+      type="number"
+      formControlName="secondNumber"
+      class="calculator__input"
+      placeholder="Second number"
+    />
 
-		<div class="calculator__input-group">
-			<label class="calculator__label" for="secondNumber">Second Number:</label>
-			<input
-				class="calculator__input"
-				[class.calculator__input--error]="secondNumberError"
-				id="secondNumber"
-				type="number"
-				[(ngModel)]="secondNumber"
-				name="secondNumber"
-				required
-			/>
-		</div>
+    <button
+      type="submit"
+      class="calculator__button"
+      [disabled]="calculatorForm.invalid || loading"
+    >
+      Calculate
+    </button>
+  </form>
 
-		<div class="calculator__input-group">
-			<label class="calculator__label" for="operation">Operation:</label>
-			<select
-				class="calculator__input"
-				id="operation"
-				[(ngModel)]="selectedOperation"
-				name="operation"
-				required
-			>
-				<option value="add">Add</option>
-				<option value="multiply">Multiply</option>
-				<option value="divide">Divide</option>
-			</select>
-		</div>
+  <div class="calculator__result" *ngIf="result !== null">
+    Result: {{ result }}
+  </div>
 
-		<button
-			class="calculator__button"
-			[class.calculator__button--disabled]="loading"
-			type="submit"
-			[disabled]="loading"
-		>
-			Calculate
-		</button>
-	</form>
-
-	@if (result) {
-		<div class="calculator__result calculator__result--success">
-			Result: {{ result }}
-		</div>
-	}
-
-	@if (error) {
-		<div class="calculator__result calculator__result--error">
-			{{ error }}
-		</div>
-	}
+  <div class="calculator__error" *ngIf="error">
+    {{ error }}
+  </div>
 </div>
