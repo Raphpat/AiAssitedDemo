@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "typography" as *;
 
 // Color getters
 @function get-color($type, $variant: "base") {
@@ -45,6 +46,8 @@
   border: 2px solid get-color("neutral", 300);
   border-radius: map-get($border-radius, "md");
   @include typography("md");
+  font-family: $font-family-mono !important;
+  letter-spacing: -0.025em;
   transition: all map-get($transitions, "base") ease-in-out;
   background-color: get-background-color("primary");
   color: get-text-color("primary");

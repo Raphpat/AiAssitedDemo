@@ -1,6 +1,18 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 :host {
   display: block;
   height: 100vh;
@@ -13,7 +25,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: get-gradient("light");
+  background: linear-gradient(
+    135deg,
+    rgba(get-color("primary", "light"), 0.15) 0%,
+    rgba(get-color("secondary", "light"), 0.15) 50%,
+    rgba(get-color("primary", "light"), 0.15) 100%
+  );
   overflow: hidden;
 }
 
@@ -47,8 +64,22 @@
 
   > * {
     @include card;
+    animation: float 6s ease-in-out infinite;
+
+    &:nth-child(2n) {
+      animation-delay: -1.5s;
+    }
+
+    &:nth-child(3n) {
+      animation-delay: -3s;
+    }
+
+    &:nth-child(5n) {
+      animation-delay: -4.5s;
+    }
 
     &:hover {
+      animation-play-state: paused;
       transform: translateY(-2px);
       box-shadow: get-shadow("hover");
     }

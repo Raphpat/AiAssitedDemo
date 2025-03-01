@@ -60,6 +60,11 @@ $spacing: (
 );
 
 // Typography
+$font-family-base: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+  "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+$font-family-mono: "Fira Code", "JetBrains Mono", "Cascadia Code", Menlo, Monaco,
+  "Courier New", monospace;
+
 $font-sizes: (
   xs: 0.75rem,
   sm: 0.875rem,
