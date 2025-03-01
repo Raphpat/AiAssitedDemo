@@ -1,0 +1,48 @@
+<div
+  class="calculator"
+  [class.calculator--loading]="loading"
+  [class.calculator--dark]="darkMode"
+>
+  <h2 class="calculator__title">Calculator</h2>
+
+  <form
+    [formGroup]="calculatorForm"
+    (ngSubmit)="calculate()"
+    class="calculator__inputs"
+  >
+    <input
+      type="number"
+      formControlName="firstNumber"
+      class="calculator__input"
+      placeholder="First number"
+    />
+    <select formControlName="selectedOperation" class="calculator__select">
+      <option value="add">+</option>
+      <option value="subtract">-</option>
+      <option value="multiply">×</option>
+      <option value="divide">÷</option>
+    </select>
+    <input
+      type="number"
+      formControlName="secondNumber"
+      class="calculator__input"
+      placeholder="Second number"
+    />
+
+    <button
+      type="submit"
+      class="calculator__button"
+      [disabled]="calculatorForm.invalid || loading"
+    >
+      Calculate
+    </button>
+  </form>
+
+  <div class="calculator__result" *ngIf="result !== null">
+    Result: {{ result }}
+  </div>
+
+  <div class="calculator__error" *ngIf="error">
+    {{ error }}
+  </div>
+</div>
