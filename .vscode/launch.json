@@ -17,20 +17,21 @@
 		},
 		{
 			"type": "java",
-			"name": "Launch Backend",
+			"name": "MathApplication",
 			"request": "launch",
-			"mainClass": "com.example.demo.DemoApplication",
-			"projectName": "demo",
+			"mainClass": "com.example.MathApplication",
+			"projectName": "AiTest",
 			"cwd": "${workspaceFolder}",
 			"env": {
 				"SPRING_PROFILES_ACTIVE": "local"
-			}
+			},
+			"vmArgs": "-Dserver.port=8080"
 		}
 	],
 	"compounds": [
 		{
 			"name": "Launch Full Stack",
-			"configurations": ["Launch Backend", "Launch Frontend"]
+			"configurations": ["MathApplication", "Launch Frontend"]
 		}
 	]
 }
