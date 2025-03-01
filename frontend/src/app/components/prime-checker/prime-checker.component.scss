@@ -1,80 +1,40 @@
-// Variables
-$color-primary: #9c27b0;
-$color-success: #4caf50;
-$color-error: #f44336;
-$color-text: #2c3e50;
-$color-text-light: #546e7a;
-$color-background: #ffffff;
-$color-border: #e0e0e0;
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
-$spacing-unit: 1rem;
-$border-radius: 0.5rem;
-$transition-duration: 0.2s;
-
-// Mixins
-@mixin input-base {
-  width: 100%;
-  padding: $spacing-unit * 0.75;
-  border: 2px solid $color-border;
-  border-radius: $border-radius;
-  font-size: 1rem;
-  transition: all $transition-duration ease-in-out;
-  background-color: $color-background;
-  color: $color-text;
-
-  &:focus {
-    outline: none;
-    border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
-  }
-
-  &--error {
-    border-color: $color-error;
-    &:focus {
-      box-shadow: 0 0 0 3px rgba($color-error, 0.1);
-    }
-  }
-}
-
-// Component styles
 .prime-checker {
-  background-color: $color-background;
-  padding: $spacing-unit * 1.5;
-  border-radius: $border-radius;
+  @include card;
 
   &__header {
-    margin-bottom: $spacing-unit * 1.5;
+    margin-bottom: spacing("lg");
   }
 
   &__title {
-    color: $color-text;
-    font-size: 1.5rem;
-    font-weight: 600;
+    color: get-text-color("primary");
+    @include typography("xl", "semibold");
     margin: 0;
   }
 
   &__form {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit * 1.5;
+    gap: spacing("lg");
   }
 
   &__input-container {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit * 0.5;
+    gap: spacing("sm");
   }
 
   &__label {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit * 0.5;
+    gap: spacing("sm");
   }
 
   &__label-text {
-    color: $color-text-light;
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: get-text-color("secondary");
+    @include typography("sm", "medium");
   }
 
   &__input {
@@ -82,78 +42,47 @@ $transition-duration: 0.2s;
   }
 
   &__validation {
-    font-size: 0.875rem;
-    color: $color-error;
-    margin-top: $spacing-unit * 0.25;
+    @include typography("sm");
+    color: get-color("error");
+    margin-top: spacing("xs");
   }
 
   &__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-unit * 0.5;
-    padding: $spacing-unit $spacing-unit * 2;
-    background-color: $color-primary;
-    color: white;
-    border: none;
-    border-radius: $border-radius;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all $transition-duration ease-in-out;
-
-    &:hover:not(:disabled) {
-      background-color: darken($color-primary, 10%);
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(1px);
-    }
-
-    &--disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
+    @include button-base("secondary");
   }
 
   &__loading-indicator {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(white, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+    @include loading-spinner;
   }
 
   &__footer {
-    margin-top: $spacing-unit * 1.5;
+    margin-top: spacing("lg");
   }
 
   &__result {
-    padding: $spacing-unit;
-    border-radius: $border-radius;
-    font-weight: 500;
+    padding: spacing("md");
+    border-radius: map-get($border-radius, "md");
+    @include typography("md", "medium");
 
     &--is-prime {
-      background-color: rgba($color-success, 0.1);
-      color: $color-success;
+      background-color: rgba(get-color("success"), 0.1);
+      color: get-color("success");
     }
 
     &--not-prime {
-      background-color: rgba($color-primary, 0.1);
-      color: $color-primary;
+      background-color: rgba(get-color("secondary"), 0.1);
+      color: get-color("secondary");
     }
   }
 
   &__error {
-    padding: $spacing-unit;
-    background-color: rgba($color-error, 0.1);
-    color: $color-error;
-    border-radius: $border-radius;
-    font-weight: 500;
+    padding: spacing("md");
+    background-color: rgba(get-color("error"), 0.1);
+    color: get-color("error");
+    border-radius: map-get($border-radius, "md");
+    @include typography("md", "medium");
   }
 
-  // Loading state
   &--loading {
     opacity: 0.7;
     pointer-events: none;

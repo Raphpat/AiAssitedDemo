@@ -1,79 +1,40 @@
-// Variables
-$color-primary: #2196f3;
-$color-error: #f44336;
-$color-text: #2c3e50;
-$color-text-light: #546e7a;
-$color-background: #ffffff;
-$color-border: #e0e0e0;
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
-$spacing-unit: 1rem;
-$border-radius: 0.5rem;
-$transition-duration: 0.2s;
-
-// Mixins
-@mixin input-base {
-  width: 100%;
-  padding: $spacing-unit * 0.75;
-  border: 2px solid $color-border;
-  border-radius: $border-radius;
-  font-size: 1rem;
-  transition: all $transition-duration ease-in-out;
-  background-color: $color-background;
-  color: $color-text;
-
-  &:focus {
-    outline: none;
-    border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
-  }
-
-  &--error {
-    border-color: $color-error;
-    &:focus {
-      box-shadow: 0 0 0 3px rgba($color-error, 0.1);
-    }
-  }
-}
-
-// Component styles
 .calculator {
-  background-color: $color-background;
-  padding: $spacing-unit * 1.5;
-  border-radius: $border-radius;
+  @include card;
 
   &__header {
-    margin-bottom: $spacing-unit * 1.5;
+    margin-bottom: spacing("lg");
   }
 
   &__title {
-    color: $color-text;
-    font-size: 1.5rem;
-    font-weight: 600;
+    color: get-text-color("primary");
+    @include typography("xl", "semibold");
     margin: 0;
   }
 
   &__form {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit * 1.5;
+    gap: spacing("lg");
   }
 
   &__inputs {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit;
+    gap: spacing("md");
   }
 
   &__label {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit * 0.5;
+    gap: spacing("sm");
   }
 
   &__label-text {
-    color: $color-text-light;
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: get-text-color("secondary");
+    @include typography("sm", "medium");
   }
 
   &__input {
@@ -84,71 +45,39 @@ $transition-duration: 0.2s;
     @include input-base;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23546e7a' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right $spacing-unit center;
-    padding-right: $spacing-unit * 3;
+    background-position: right spacing("md") center;
+    padding-right: spacing("xl");
   }
 
   &__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-unit * 0.5;
-    padding: $spacing-unit $spacing-unit * 2;
-    background-color: $color-primary;
-    color: white;
-    border: none;
-    border-radius: $border-radius;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all $transition-duration ease-in-out;
-
-    &:hover:not(:disabled) {
-      background-color: darken($color-primary, 10%);
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(1px);
-    }
-
-    &--disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
+    @include button-base("primary");
   }
 
   &__loading-indicator {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(white, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+    @include loading-spinner;
   }
 
   &__footer {
-    margin-top: $spacing-unit * 1.5;
+    margin-top: spacing("lg");
   }
 
   &__result {
-    padding: $spacing-unit;
-    background-color: rgba($color-primary, 0.1);
-    color: $color-primary;
-    border-radius: $border-radius;
-    font-weight: 500;
+    padding: spacing("md");
+    background-color: rgba(get-color("primary"), 0.1);
+    color: get-color("primary");
+    border-radius: map-get($border-radius, "md");
+    @include typography("md", "medium");
   }
 
   &__error {
-    padding: $spacing-unit;
-    background-color: rgba($color-error, 0.1);
-    color: $color-error;
-    border-radius: $border-radius;
-    font-weight: 500;
+    padding: spacing("md");
+    background-color: rgba(get-color("error"), 0.1);
+    color: get-color("error");
+    border-radius: map-get($border-radius, "md");
+    @include typography("md", "medium");
   }
 
-  // Loading state
   &--loading {
     opacity: 0.7;
     pointer-events: none;

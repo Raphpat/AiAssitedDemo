@@ -1,0 +1,130 @@
+@use "variables" as *;
+@use "typography" as *;
+
+// Color getters
+@function get-color($type, $variant: "base") {
+  @if map-has-key($palette, $type) {
+    @return map-get(map-get($palette, $type), $variant);
+  }
+  @error 'Invalid color type: #{$type}';
+}
+
+@function get-text-color($variant: "primary") {
+  @return map-get(map-get($colors, text), $variant);
+}
+
+@function get-background-color($variant: "primary") {
+  @return map-get(map-get($colors, background), $variant);
+}
+
+// Spacing
+@function spacing($size) {
+  @return map-get($spacing, $size);
+}
+
+// Typography
+@mixin typography($size: "md", $weight: "regular") {
+  font-size: map-get($font-sizes, $size);
+  font-weight: map-get($font-weights, $weight);
+}
+
+// Responsive
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media screen and (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @error 'Invalid breakpoint: #{$breakpoint}';
+  }
+}
+
+// Common patterns
+@mixin input-base {
+  width: 100%;
+  padding: spacing("md");
+  border: 2px solid get-color("neutral", 300);
+  border-radius: map-get($border-radius, "md");
+  @include typography("md");
+  font-family: $font-family-mono !important;
+  letter-spacing: -0.025em;
+  transition: all map-get($transitions, "base") ease-in-out;
+  background-color: get-background-color("primary");
+  color: get-text-color("primary");
+
+  &:focus {
+    outline: none;
+    border-color: get-color("primary");
+    box-shadow: 0 0 0 3px rgba(get-color("primary"), 0.1);
+  }
+
+  &--error {
+    border-color: get-color("error");
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(get-color("error"), 0.1);
+    }
+  }
+}
+
+@mixin button-base($variant: "primary") {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing("sm");
+  padding: spacing("md") spacing("lg");
+  background-color: get-color($variant);
+  color: white;
+  border: none;
+  border-radius: map-get($border-radius, "md");
+  @include typography("md", "medium");
+  cursor: pointer;
+  transition: all map-get($transitions, "base") ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: get-color($variant, "dark");
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+@mixin card {
+  background-color: get-background-color("primary");
+  padding: spacing("lg");
+  border-radius: map-get($border-radius, "md");
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@mixin loading-spinner($size: 1rem, $color: white) {
+  width: $size;
+  height: $size;
+  border: 2px solid rgba($color, 0.3);
+  border-top-color: $color;
+  border-radius: map-get($border-radius, "full");
+  animation: spin map-get($transitions, "slow") linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin container {
+  width: 100%;
+  max-width: map-get($breakpoints, "xl");
+  margin: 0 auto;
+  padding-left: spacing("lg");
+  padding-right: spacing("lg");
+
+  @include respond-to("md") {
+    padding-left: spacing("xl");
+    padding-right: spacing("xl");
+  }
+}
