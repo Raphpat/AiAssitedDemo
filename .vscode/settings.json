@@ -75,7 +75,11 @@
     },
     "[scss]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.insertSpaces": false
+        "editor.insertSpaces": false,
+        "editor.suggest.insertMode": "replace",
+        "editor.quickSuggestions": {
+            "strings": true
+        }
     },
 
     // Terminal settings
@@ -87,6 +91,13 @@
     "prettier.printWidth": 120,
     "prettier.tabWidth": 2,
     "prettier.useTabs": true,
+
+    // CSS/SCSS settings
+    "css.validate": false,
+    "scss.validate": true,
+    "scss.scannerExclude": ["**/.git/**", "**/node_modules/**"],
+    "scss.completion.completePropertyWithSemicolon": true,
+    "scss.format.spaceAroundSelectorSeparator": true,
 
     // Other settings
     "workbench.iconTheme": "material-icon-theme",
