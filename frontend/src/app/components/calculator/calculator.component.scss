@@ -9,7 +9,7 @@
   }
 
   &__title {
-    color: get-text-color("primary");
+    color: map-get(map-get($colors, text), primary);
     @include typography("xl", "semibold");
     margin: 0;
   }
@@ -33,12 +33,17 @@
   }
 
   &__label-text {
-    color: get-text-color("secondary");
+    color: map-get(map-get($colors, text), secondary);
     @include typography("sm", "medium");
   }
 
   &__input {
     @include input-base;
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
   }
 
   &__select {
@@ -48,40 +53,121 @@
     background-repeat: no-repeat;
     background-position: right spacing("md") center;
     padding-right: spacing("xl");
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: spacing("md");
   }
 
   &__button {
     @include button-base("primary");
+    min-width: 100px;
+    position: relative;
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    &--secondary {
+      @include button-base("secondary");
+    }
   }
 
   &__loading-indicator {
     @include loading-spinner;
+    margin-right: spacing("sm");
   }
 
   &__footer {
     margin-top: spacing("lg");
+    display: flex;
+    flex-direction: column;
+    gap: spacing("md");
   }
 
   &__result {
     padding: spacing("md");
-    background-color: rgba(get-color("primary"), 0.1);
-    color: get-color("primary");
+    background-color: rgba(map-get(map-get($palette, primary), base), 0.1);
+    color: map-get(map-get($palette, primary), base);
     border-radius: map-get($border-radius, "md");
     @include typography("md", "medium");
   }
 
   &__error {
     padding: spacing("md");
-    background-color: rgba(get-color("error"), 0.1);
-    color: get-color("error");
+    background-color: rgba(map-get(map-get($palette, error), base), 0.1);
+    color: map-get(map-get($palette, error), base);
     border-radius: map-get($border-radius, "md");
     @include typography("md", "medium");
   }
 
-  &--loading {
-    opacity: 0.7;
-    pointer-events: none;
+  &__history {
+    margin-top: spacing("lg");
+    border-top: 1px solid map-get($colors, border);
+    padding-top: spacing("lg");
   }
+
+  &__history-title {
+    color: map-get(map-get($colors, text), primary);
+    @include typography("lg", "medium");
+    margin: 0 0 spacing("md");
+  }
+
+  &__history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: spacing("sm");
+  }
+
+  &__history-item {
+    padding: spacing("sm");
+    background-color: map-get(map-get($colors, background), secondary);
+    border-radius: map-get($border-radius, "sm");
+    @include typography("sm", "regular");
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__history-timestamp {
+    color: map-get(map-get($colors, text), secondary);
+    @include typography("xs", "regular");
+  }
+
+  &--loading {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(map-get(map-get($colors, background), primary), 0.5);
+      border-radius: inherit;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @keyframes spin {

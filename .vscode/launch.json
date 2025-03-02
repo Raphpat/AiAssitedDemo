@@ -3,16 +3,25 @@
 	"configurations": [
 		{
 			"name": "Launch Frontend",
-			"type": "node",
+			"type": "chrome",
 			"request": "launch",
-			"cwd": "${workspaceFolder}/frontend",
-			"runtimeExecutable": "npm",
-			"runtimeArgs": ["run", "start"],
-			"console": "integratedTerminal",
-			"serverReadyAction": {
-				"pattern": "- Local:.+(https?://\\S+)",
-				"uriFormat": "http://localhost:4200",
-				"action": "openExternally"
+			"preLaunchTask": "npm: start",
+			"url": "http://localhost:4200/",
+			"webRoot": "${workspaceFolder}/frontend",
+			"sourceMaps": true,
+			"runtimeExecutable": "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe",
+			"sourceMapPathOverrides": {
+				"webpack:/*": "${webRoot}/*",
+				"/./*": "${webRoot}/*",
+				"/src/*": "${webRoot}/src/*",
+				"/*": "*",
+				"/./~/*": "${webRoot}/node_modules/*"
+			},
+			"userDataDir": false,
+			"presentation": {
+				"hidden": false,
+				"group": "frontend",
+				"order": 1
 			}
 		},
 		{
@@ -31,7 +40,10 @@
 	"compounds": [
 		{
 			"name": "Launch Full Stack",
-			"configurations": ["MathApplication", "Launch Frontend"]
+			"configurations": [
+				"MathApplication",
+				"Launch Frontend"
+			]
 		}
 	]
 }

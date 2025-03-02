@@ -1,44 +1,37 @@
-<article
-  class="calculator"
-  [class.calculator--loading]="loading"
-  [attr.aria-busy]="loading"
->
-  <header class="calculator__header">
+<div class="calculator" [class.calculator--loading]="state.loading">
+  <div class="calculator__header">
     <h2 class="calculator__title">Calculator</h2>
-  </header>
+  </div>
 
-  <form
-    [formGroup]="calculatorForm"
-    (ngSubmit)="calculate()"
-    class="calculator__form"
-    role="form"
-    aria-label="Math Calculator"
-  >
+  <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()" class="calculator__form">
     <div class="calculator__inputs">
       <label class="calculator__label">
         <span class="calculator__label-text">First Number</span>
         <input
           type="number"
-          formControlName="firstNumber"
           class="calculator__input"
+          formControlName="firstNumber"
           [class.calculator__input--error]="
             calculatorForm.get('firstNumber')?.invalid &&
             calculatorForm.get('firstNumber')?.touched
           "
-          aria-label="First number"
+          [attr.aria-invalid]="calculatorForm.get('firstNumber')?.invalid"
+          [attr.aria-disabled]="state.loading"
+          [disabled]="state.loading"
         />
       </label>
 
       <label class="calculator__label">
         <span class="calculator__label-text">Operation</span>
         <select
-          formControlName="selectedOperation"
           class="calculator__select"
-          aria-label="Mathematical operation"
+          formControlName="selectedOperation"
+          [attr.aria-disabled]="state.loading"
+          [disabled]="state.loading"
         >
-          <option value="add">Addition (+)</option>
-          <option value="multiply">Multiplication (×)</option>
-          <option value="divide">Division (÷)</option>
+          @for (op of operations; track op.value) {
+            <option [value]="op.value">{{ op.label }}</option>
+          }
         </select>
       </label>
 
@@ -46,45 +39,73 @@
         <span class="calculator__label-text">Second Number</span>
         <input
           type="number"
-          formControlName="secondNumber"
           class="calculator__input"
+          formControlName="secondNumber"
           [class.calculator__input--error]="
             calculatorForm.get('secondNumber')?.invalid &&
             calculatorForm.get('secondNumber')?.touched
           "
-          aria-label="Second number"
+          [attr.aria-invalid]="calculatorForm.get('secondNumber')?.invalid"
+          [attr.aria-disabled]="state.loading"
+          [disabled]="state.loading"
         />
       </label>
     </div>
 
-    <button
-      type="submit"
-      class="calculator__button"
-      [class.calculator__button--disabled]="calculatorForm.invalid || loading"
-      [disabled]="calculatorForm.invalid || loading"
-      aria-label="Calculate result"
-    >
-      <span class="calculator__button-text">Calculate</span>
-      <span
-        *ngIf="loading"
-        class="calculator__loading-indicator"
-        aria-hidden="true"
-      ></span>
-    </button>
+    <div class="calculator__actions">
+      <button
+        type="submit"
+        class="calculator__button"
+        [disabled]="calculatorForm.invalid || state.loading"
+        [attr.aria-busy]="state.loading"
+      >
+        @if (state.loading) {
+          <span class="calculator__loading-indicator" aria-hidden="true"></span>
+          <span class="visually-hidden">Calculating...</span>
+        } @else {
+          Calculate
+        }
+      </button>
+
+      <button
+        type="button"
+        class="calculator__button calculator__button--secondary"
+        (click)="clearForm()"
+        [disabled]="state.loading"
+      >
+        Clear
+      </button>
+    </div>
   </form>
 
-  <footer class="calculator__footer" *ngIf="result !== null || error">
-    <div
-      *ngIf="result !== null"
-      class="calculator__result"
-      role="status"
-      aria-live="polite"
-    >
-      Result: {{ result }}
-    </div>
+  <div class="calculator__footer">
+    @if (state.error) {
+      <div class="calculator__error" role="alert">
+        {{ errorMessage }}
+      </div>
+    }
 
-    <div *ngIf="error" class="calculator__error" role="alert">
-      {{ error }}
-    </div>
-  </footer>
-</article>
+    @if (state.calculation) {
+      <div class="calculator__result" role="status" aria-live="polite">
+        {{ state.calculation.firstNumber }}
+        {{ state.calculation.operation }}
+        {{ state.calculation.secondNumber }} =
+        {{ state.calculation.result }}
+      </div>
+    }
+
+    @if (calculationHistory.length > 0) {
+      <div class="calculator__history">
+        <h3 class="calculator__history-title">History</h3>
+        <ul class="calculator__history-list">
+          @for (calc of calculationHistory; track calc.timestamp) {
+            <li class="calculator__history-item">
+              {{ calc.firstNumber }} {{ calc.operation }} {{ calc.secondNumber }} = {{ calc.result }}
+              <small class="calculator__history-timestamp">{{ calc.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</small>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</div>
