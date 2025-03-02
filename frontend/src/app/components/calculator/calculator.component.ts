@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MathError } from '../../models/api-error.model';
+import { CalculationResult, CalculatorState, isValidCalculatorInput, Operation } from '../../models/calculator.model';
 import { MathService } from '../../services/math.service';
 
 @Component({
@@ -12,83 +14,128 @@ import { MathService } from '../../services/math.service';
 })
 export class CalculatorComponent implements OnInit {
   calculatorForm: FormGroup;
-  result: number | null = null;
-  error: string | null = null;
-  darkMode: boolean = false;
-  loading: boolean = false;
+  state: CalculatorState = {
+    calculation: null,
+    error: null,
+    loading: false
+  };
+  calculationHistory: CalculationResult[] = [];
+
+  readonly operations: { value: Operation; label: string }[] = [
+    { value: 'add', label: 'Add (+)' },
+    { value: 'subtract', label: 'Subtract (-)' },
+    { value: 'multiply', label: 'Multiply (×)' },
+    { value: 'divide', label: 'Divide (÷)' },
+  ];
 
   constructor(private mathService: MathService, private fb: FormBuilder) {
     this.calculatorForm = this.fb.group({
-      firstNumber: [0],
-      selectedOperation: ['add'],
-      secondNumber: [0],
+      firstNumber: [null, [Validators.required, Validators.pattern(/^-?\d*\.?\d+$/)]],
+      selectedOperation: ['add', Validators.required],
+      secondNumber: [null, [Validators.required, Validators.pattern(/^-?\d*\.?\d+$/)]],
     });
   }
 
-  ngOnInit() {
-    // Reset result when form values change
+  ngOnInit(): void {
     this.calculatorForm.valueChanges.subscribe(() => {
-      this.result = null;
-      this.error = null;
+      this.resetState();
     });
   }
 
-  calculate() {
-    if (this.calculatorForm.invalid) return;
+  private resetState(): void {
+    this.state = {
+      calculation: null,
+      error: null,
+      loading: false
+    };
+  }
 
-    this.error = null;
-    this.result = null;
-    this.loading = true;
+  async onSubmit(): Promise<void> {
+    if (this.calculatorForm.invalid) {
+      this.state = {
+        calculation: null,
+        error: new MathError('Please fill in all fields correctly', 'VALIDATION_ERROR'),
+        loading: false
+      };
+      return;
+    }
 
-    const { firstNumber, secondNumber, selectedOperation } =
-      this.calculatorForm.value;
+    const rawValue = this.calculatorForm.value;
+    const formValue = {
+      firstNumber: parseFloat(rawValue.firstNumber),
+      secondNumber: parseFloat(rawValue.secondNumber),
+      selectedOperation: rawValue.selectedOperation as Operation
+    };
+
+    if (!isValidCalculatorInput(formValue) || isNaN(formValue.firstNumber) || isNaN(formValue.secondNumber)) {
+      this.state = {
+        calculation: null,
+        error: new MathError('Invalid input values', 'VALIDATION_ERROR'),
+        loading: false
+      };
+      return;
+    }
+
+    this.state = {
+      calculation: null,
+      loading: true,
+      error: null
+    };
 
     try {
-      switch (selectedOperation) {
-        case 'add':
-          this.mathService.add(firstNumber, secondNumber).subscribe({
-            next: (result) => {
-              this.result = result;
-              this.loading = false;
-            },
-            error: (error) => {
-              this.handleError(error);
-            },
-          });
-          break;
-        case 'multiply':
-          this.mathService.multiply(firstNumber, secondNumber).subscribe({
-            next: (result) => {
-              this.result = result;
-              this.loading = false;
-            },
-            error: (error) => {
-              this.handleError(error);
-            },
-          });
-          break;
-        case 'divide':
-          this.mathService.divide(firstNumber, secondNumber).subscribe({
-            next: (result) => {
-              this.result = result;
-              this.loading = false;
-            },
-            error: (error) => {
-              this.handleError(error);
-            },
-          });
-          break;
-        default:
-          this.error = 'Invalid operation';
-          this.loading = false;
-      }
-    } catch (e) {
-      this.handleError(e);
+      const result = await this.mathService.calculate(
+        formValue.firstNumber,
+        formValue.secondNumber,
+        formValue.selectedOperation
+      );
+
+      const calculation = {
+        firstNumber: formValue.firstNumber,
+        secondNumber: formValue.secondNumber,
+        operation: formValue.selectedOperation,
+        result
+      };
+
+      this.state = {
+        calculation,
+        error: null,
+        loading: false
+      };
+
+      this.calculationHistory.unshift({
+        ...calculation,
+        timestamp: new Date().toISOString()
+      });
+    } catch (err: any) {
+      this.state = {
+        calculation: null,
+        error: err,
+        loading: false
+      };
     }
   }
 
-  private handleError(error: any) {
-    this.error = error.error?.message || error.message || 'An error occurred';
-    this.loading = false;
+  clearForm(): void {
+    this.calculatorForm.reset({
+      firstNumber: null,
+      selectedOperation: 'add',
+      secondNumber: null
+    });
+    this.resetState();
+  }
+
+  get errorMessage(): string {
+    if (!this.state.error) return '';
+
+    switch (this.state.error.code) {
+      case 'VALIDATION_ERROR':
+        return 'Please check your input values';
+      case 'DIVISION_BY_ZERO':
+        return 'Division by zero is not allowed';
+      case 'CLIENT_ERROR':
+        return 'Please check your connection and try again';
+      default:
+        return this.state.error.message;
+    }
   }
 }
