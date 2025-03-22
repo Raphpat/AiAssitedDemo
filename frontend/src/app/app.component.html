@@ -1,12 +1,12 @@
-<main class="app-container" role="main">
-  <header class="app-header" role="banner">
-    <h1 class="app-title">{{ title }}</h1>
-  </header>
+<h1>Welcome to {{ title }}!</h1>
 
-  <section class="app-content" role="region" aria-label="Math Operations">
-    <div class="app-grid">
-      <app-calculator></app-calculator>
-      <app-prime-checker></app-prime-checker>
-    </div>
-  </section>
-</main>
+<nav>
+	<ul>
+		<li><a routerLink="/welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Welcome Component</a></li>
+		<li><a routerLink="/calculator" routerLinkActive="active" ariaCurrentWhenActive="page">calculator Component</a></li>
+		<li><a routerLink="/tasks" routerLinkActive="active" ariaCurrentWhenActive="page">tasks Component</a>
+		</li>
+	</ul>
+</nav>
+
+<router-outlet />

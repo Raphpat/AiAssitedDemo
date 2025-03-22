@@ -48,7 +48,7 @@
 	"git.autofetch": true,
 	// Language specific settings
 	"[typescript]": {
-		"editor.defaultFormatter": "Angular.ng-template",
+		"editor.defaultFormatter": "vscode.typescript-language-features",
 		"editor.tabSize": 2,
 		"editor.insertSpaces": false
 	},
@@ -65,7 +65,7 @@
 		"editor.defaultFormatter": "vscode.json-language-features"
 	},
 	"[html]": {
-		"editor.defaultFormatter": "Angular.ng-template",
+		"editor.defaultFormatter": "vscode.html-language-features",
 		"editor.insertSpaces": false
 	},
 	"[scss]": {
