@@ -17,7 +17,6 @@
           "
           [attr.aria-invalid]="calculatorForm.get('firstNumber')?.invalid"
           [attr.aria-disabled]="state.loading"
-          [disabled]="state.loading"
         />
       </label>
 
@@ -27,7 +26,6 @@
           class="calculator__select"
           formControlName="selectedOperation"
           [attr.aria-disabled]="state.loading"
-          [disabled]="state.loading"
         >
           @for (op of operations; track op.value) {
             <option [value]="op.value">{{ op.label }}</option>
@@ -47,7 +45,6 @@
           "
           [attr.aria-invalid]="calculatorForm.get('secondNumber')?.invalid"
           [attr.aria-disabled]="state.loading"
-          [disabled]="state.loading"
         />
       </label>
     </div>

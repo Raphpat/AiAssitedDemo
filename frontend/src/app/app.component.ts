@@ -9,9 +9,4 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 	standalone: true,
 })
 export class AppComponent {
-	readonly #title = 'Math Operations' as const;
-
-	get title(): string {
-		return this.#title;
-	}
 }
