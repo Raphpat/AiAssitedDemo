@@ -1,0 +1,56 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.app {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; // Prevent scrollbars
+
+    &__header {
+        background-color: map-get($colors, background, primary); // Header background
+        padding: spacing("md");
+        border-bottom: 1px solid map-get($colors, border); // Optional: border for separation
+    }
+
+    &__content {
+        flex: 1; // Take up remaining space
+        overflow-y: auto; // Allow vertical scrolling only in the content area if needed
+        padding: spacing("md"); // Optional: padding for content
+    }
+}
+
+.navbar {
+    background-color: map-get($colors, background, primary);
+    padding: spacing("md");
+    border-radius: map-get($border-radius, "md");
+
+    &__list {
+        list-style-type: none; // Remove bullet points
+        padding: 0; // Remove default padding
+        margin: 0; // Remove default margin
+        display: flex; // Use flexbox for horizontal layout
+        gap: spacing("md"); // Use spacing from your variables
+    }
+
+    &__item {
+        // Additional styles for items if needed
+    }
+
+    &__link {
+        @include button-base("primary"); // Use a mixin for button styles
+        color: map-get(map-get($colors, text), primary); // Text color
+        text-decoration: none; // Remove underline
+        padding: spacing("sm"); // Use spacing from your variables
+        border-radius: map-get($border-radius, "sm"); // Use border radius from your variables
+        transition: background-color 0.3s; // Smooth transition for hover effect
+
+        &:hover {
+            background-color: map-get($colors, primary); // Change background on hover
+            color: white; // Change text color on hover
+        }
+
+        &--active {
+            border-bottom: 2px solid map-get($colors, accent); // Active link style
+        }
+    }
+}

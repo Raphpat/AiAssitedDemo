@@ -1,12 +1,20 @@
-<h1>Welcome to {{ title }}!</h1>
-
-<nav>
-	<ul>
-		<li><a routerLink="/welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Welcome Component</a></li>
-		<li><a routerLink="/calculator" routerLinkActive="active" ariaCurrentWhenActive="page">calculator Component</a></li>
-		<li><a routerLink="/tasks" routerLinkActive="active" ariaCurrentWhenActive="page">tasks Component</a>
-		</li>
-	</ul>
-</nav>
-
-<router-outlet />
+<div class="app">
+	<header class="app__header">
+		<nav class="navbar">
+			<ul class="navbar__list">
+				<li class="navbar__item">
+					<a routerLink="/" routerLinkActive="navbar__link--active" class="navbar__link">Home</a>
+				</li>
+				<li class="navbar__item">
+					<a routerLink="/calculator" routerLinkActive="navbar__link--active" class="navbar__link">Calculator</a>
+				</li>
+				<li class="navbar__item">
+					<a routerLink="/tasks" routerLinkActive="navbar__link--active" class="navbar__link">Tasks</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<main class="app__content">
+		<router-outlet></router-outlet>
+	</main>
+</div>
