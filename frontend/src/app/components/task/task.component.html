@@ -1,8 +1,0 @@
-@for (task of tasks; track task.id) {
-<h3>{{ task.title }}</h3>
-<p>{{ task.description }}</p>
-<button (click)="updateTask(task)">Update</button>
-<button (click)="deleteTask(task.id)">Delete</button>
-
-}
-<button (click)="addNewTask()">Add New Task</button>
