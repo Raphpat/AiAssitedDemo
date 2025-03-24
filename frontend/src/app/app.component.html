@@ -1,12 +1,20 @@
-<main class="app-container" role="main">
-  <header class="app-header" role="banner">
-    <h1 class="app-title">{{ title }}</h1>
-  </header>
-
-  <section class="app-content" role="region" aria-label="Math Operations">
-    <div class="app-grid">
-      <app-calculator></app-calculator>
-      <app-prime-checker></app-prime-checker>
-    </div>
-  </section>
-</main>
+<div class="app">
+	<header class="app__header">
+		<nav class="navbar">
+			<ul class="navbar__list">
+				<li class="navbar__item">
+					<a routerLink="/" routerLinkActive="navbar__link--active" class="navbar__link">Home</a>
+				</li>
+				<li class="navbar__item">
+					<a routerLink="/calculator" routerLinkActive="navbar__link--active" class="navbar__link">Calculator</a>
+				</li>
+				<li class="navbar__item">
+					<a routerLink="/tasks" routerLinkActive="navbar__link--active" class="navbar__link">Tasks</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<main class="app__content">
+		<router-outlet></router-outlet>
+	</main>
+</div>

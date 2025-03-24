@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
-import { CalculatorComponent } from './calculator/calculator.component';
+import { CalculatorComponent } from "./components/calculator/calculator.component";
+import { WelcomeComponent } from "./components/welcome/welcome.component";
 
 export const routes: Routes = [
-  { path: '', component: CalculatorComponent },
-  { path: 'calculator', component: CalculatorComponent }
+	{ path: '', redirectTo: 'welcome', pathMatch: 'full' },
+	{ path: 'welcome', component: WelcomeComponent },
+	{ path: 'calculator', component: CalculatorComponent }
 ];
