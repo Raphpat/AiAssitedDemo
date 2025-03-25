@@ -1,7 +1,9 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { Task } from "./task.model";
+import { AppState } from "./task.reducer";
 
-export const selectTasks = createFeatureSelector<Task[]>('tasks');
+export const selectTaskState = createFeatureSelector<AppState>('tasks');
 
-export const selectTaskById = (props :{id: number}) =>
-  createSelector(selectTasks, tasks => tasks.find(task => task.id === props.id));
+export const selectTasks = createSelector(selectTaskState, (state: AppState) => state.tasks);
+
+export const selectTaskById = (id: number) =>
+  createSelector(selectTasks, tasks => tasks.find(task => task.id === id));

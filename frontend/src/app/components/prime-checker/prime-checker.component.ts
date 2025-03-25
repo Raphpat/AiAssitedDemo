@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -11,7 +11,7 @@ import { MathService } from '../../services/math.service';
 @Component({
   selector: 'app-prime-checker',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './prime-checker.component.html',
   styleUrls: ['./prime-checker.component.scss'],
 })

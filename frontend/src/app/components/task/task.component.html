@@ -1,7 +1,11 @@
-<div *ngFor="let task of tasks" class="task">
-  <h3>{{ task.title }}</h3>
-  <p>{{ task.description }}</p>
-  <button (click)="updateTask(task)">Update</button>
-  <button (click)="deleteTask(task.id)">Delete</button>
-</div>
+<ng-container *ngIf="tasks$ | async as tasks">
+	@for (task of tasks; track task) {
+		<div class="task">
+			<h3>{{ task.title }}</h3>
+			<p>{{ task.description }}</p>
+			<button (click)="updateTask(task)">Update</button>
+			<button (click)="deleteTask(task.id)">Delete</button>
+		</div>
+	}
+</ng-container>
 <button (click)="addNewTask()">Add New Task</button>
