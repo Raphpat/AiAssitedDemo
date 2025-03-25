@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CalculatorComponent } from "../calculator/calculator.component";
@@ -8,7 +8,6 @@ import { PrimeCheckerComponent } from "../prime-checker/prime-checker.component"
 	selector: 'app-welcome',
 	standalone: true,
 	imports: [
-		CommonModule,
 		ReactiveFormsModule,
 		CalculatorComponent,
 		PrimeCheckerComponent,
